@@ -6,12 +6,23 @@ var twitterCloneApp = angular.module('twitterCloneApp', ['ngResource', 'ngRoute'
 	})
 	.controller('TwitterCloneCtrl', function($scope, $firebaseObject, $firebaseArray) {
 
-	// firebase refs to get users
-	var usersRef = firebase.database().ref().child('users');
+	// firebase refs
+	var timelineRef,
+		timelineHandler,
+		userHandler,
+		usersRef = firebase.database().ref().child('users');
+	
 	$scope.rawUsers = $firebaseArray(usersRef);
 
 	// handler for when a selected user changes
 	$scope.handleUserChange = function() {
-		console.log('user with id: ' + $scope.selectedUser.id + ' has been selected!');
+		var userKey = $scope.selectedUser.$id;
+		console.log('user with id: ' + userKey + ' has been selected!');
+	
+		if (userKey) {
+			timelineRef = firebase.database().ref().child('userObjects').child('timeline').child(userKey);
+			
+			$scope.selectedUserTimeline = $firebaseArray(timelineRef);			
+		}
 	};
 });

@@ -39,7 +39,10 @@
                     <span>Twitter Clone</span>
                     <div id="user-select" style="float: right;">
                         <div class="input-group">
-                            <select class="form-control" ng-model="selectedUser" ng-options="user.firstName for user in rawUsers track by user.id" ng-change="handleUserChange()">
+                            <select class="form-control" 
+                                    ng-model="selectedUser" 
+                                    ng-options="user.name for user in rawUsers" 
+                                    ng-change="handleUserChange()">
                                 <option value="">Select a person to impersonate</option>
                             </select>
                         </div>
@@ -64,7 +67,21 @@
             <div id="user-following" style="padding: 2rem 0;"></div>
         </div>
         <div class="col-xs-12 col-md-6">
-            <div id="user-timeline" style="padding: 2rem 0;"></div>
+            <div id="user-timeline" style="padding: 2rem 0;">
+                <h3>Timeline</h3>
+                <ul class="list-group">
+                    <li class="list-group-item" 
+                        ng-repeat="timeline in selectedUserTimeline">
+                        <h4 class="list-group-item-heading">
+                            {{timeline.user.name}}
+                            <small>{{timeline.user.username}}</small>
+                            <button ng-if="timeline.userKey === selectedUser.$id"
+                                    class="btn btn-danger" style="float: right;">X</button>
+                        </h4>
+                        <p class="list-group-item-text">{{timeline.text}}</p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
